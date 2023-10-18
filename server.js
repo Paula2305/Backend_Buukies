@@ -1,15 +1,16 @@
 import express from 'express';
-const app = express();
-const db = './db.js';
+import indexRoutes from "./routes/books.routes.js"
+import './utils/mongooseDB.js';
 
+const app = express();
 const PORT = process.env.PORT || 4045;
 
-let BookController = './book/BookController.js';
-app.use('/books', BookController);
+
+app.use(express.json());
+app.use(express.urlencoded({extended: true}))
+app.use(indexRoutes);
 
 app.listen(PORT, () => {
-    console.log(`Servidor escuchando en el http://localhost:${PORT}`);
 })
-
 
 
