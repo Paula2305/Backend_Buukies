@@ -22,6 +22,16 @@ export const getBook = async (req, res) => {
     }
 };
 
+export const deleteBook = async(req,res) => {
+    try {
+        const book = await Book.deleteOne( { _id : req.id})
+        return res.status(204);
+    }catch{
+        console.error('Error deleting book:', error);
+        return res.status(404);
+    }
+}
+
 
 
 // const User = mongoose.model('User', Schema({
