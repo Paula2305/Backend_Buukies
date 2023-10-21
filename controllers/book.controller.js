@@ -24,13 +24,31 @@ export const getBook = async (req, res) => {
 
 export const deleteBook = async(req,res) => {
     try {
-        const book = await Book.deleteOne( { _id : req.id})
-        return res.status(204);
-    }catch{
+        await Book.deleteOne( { _id : req.params.id})
+        return res.sendStatus(204);
+    }catch (error) {
         console.error('Error deleting book:', error);
-        return res.status(404);
+        return res.status(404).send('Error deleting book');
     }
 }
+
+export const updateBook = async(req,res) => {
+    try {
+        const filter = {_id: req.params.id};
+        const update = req.body;
+        await Book.updateOne(filter, update);
+        return res.sendStatus(204);
+    }catch(error){
+        return res.status(404).send('Error updating book');
+    }
+}
+
+
+/* export const updateBook = (req,res) => {
+    try {
+
+    }
+} */
 
 
 
