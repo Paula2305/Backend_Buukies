@@ -44,14 +44,6 @@ export const updateBook = async(req,res) => {
 }
 
 
-/* export const updateBook = (req,res) => {
-    try {
-
-    }
-} */
-
-
-
 // const User = mongoose.model('User', Schema({
 //     name: String,
 //     email: String

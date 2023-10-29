@@ -1,5 +1,6 @@
 import express from 'express';
-import indexRoutes from "./routes/books.routes.js"
+import bookRoutes from "./routes/books.routes.js"
+import userRouter from "./routes/user.routes.js"
 import './utils/mongooseDB.js';
 
 const app = express();
@@ -8,7 +9,8 @@ const PORT = process.env.PORT || 4045;
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
-app.use(indexRoutes);
+app.use(bookRoutes);
+app.use(userRouter);
 
 app.listen(PORT, () => {
 })
