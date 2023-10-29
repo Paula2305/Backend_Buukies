@@ -6,15 +6,36 @@ export const createUser = async (req,res) => {
         const email = req.body.email;
         const usuarioExistente = await User.findOne({email});
         if(usuarioExistente){
-            return res.status(400).json({message: 'Email ya registrado '});
+            return res.status(400).json({message: 'Email already registered '});
         }
 
         const user = new User(req.body);
         await user.save();
         return res.status(201).json({ message: req.body });
     }catch(error){
-        console.log('Error creating user', error);
+        console.log('Error creating user:', error);
         return res.status(500).json({ error: 'An error occurred while creating the user.' });
+    }
+}
+
+export const getAllUsers = async (req,res) => {
+    try{
+        const allUsers = await User.find();
+        return res.status(200).json(allUsers);
+    }catch(error){
+        console.log('Error fetching users:',error);
+        return res.status(500).json({ error: 'An error occurred while fetching users.' });
+    }
+}
+
+export const getUserById = async (req,res) => {
+    try{
+        const id = req.params.id; // traigo el id por parametro
+        const user = await User.findOne({_id:id});
+        return res.status(200).json(user);
+    }catch(error){
+        console.log('Error fetching user:', error);
+        return res.status(500).json({error: 'An error occurred while fetching user.'})
     }
 }
 

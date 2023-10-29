@@ -24,7 +24,8 @@ export const getBook = async (req, res) => {
 
 export const deleteBook = async(req,res) => {
     try {
-        await Book.deleteOne( { _id : req.params.id})
+        const id = req.params.id; 
+        await Book.deleteOne( { _id :id})
         return res.sendStatus(204);
     }catch (error) {
         console.error('Error deleting book:', error);
