@@ -43,13 +43,24 @@ export const deleteUserById = async (req,res) =>{
     try{
         const id = req.params.id;
         await User.deleteOne({_id:id});
-        return res.sendStatus(204);
+        return res.sendStatus(204).json({message: 'User deleted'});
     }catch(error){
         console.error('Error deleting book:', error);
         return res.status(404).send('Error deleting book');
     }
 }
 
+export const updateUser = async (req, res) => {
+    try{
+        const filter = {_id: req.params.id};
+        const update = req.body;
+        await User.updateOne(filter, update);
+        return res.sendStatus(204);
+    }catch(error){
+        console.log(('Error updating user', error));
+        return res.status(404).send({error: 'An error ocurred while updating user'});
+    }
+}
 
 
 
