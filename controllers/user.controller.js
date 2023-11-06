@@ -39,6 +39,17 @@ export const getUserById = async (req,res) => {
     }
 }
 
+export const deleteUserById = async (req,res) =>{
+    try{
+        const id = req.params.id;
+        await User.deleteOne({_id:id});
+        return res.sendStatus(204);
+    }catch(error){
+        console.error('Error deleting book:', error);
+        return res.status(404).send('Error deleting book');
+    }
+}
+
 
 
 
