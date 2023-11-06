@@ -12,10 +12,21 @@ export const createBook = async (req, res) => {
     }
 };
 
-export const getBook = async (req, res) => {
+export const getAllBooks = async (req, res) => {
     try {
         const allBooks = await Book.find();
         return res.status(200).json(allBooks);
+    } catch (error) {
+        console.error('Error fetching books:', error);
+        return res.status(500).json({ error: 'An error occurred while fetching books.' });
+    }
+};
+
+export const getBookById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const result = await Book.findById( { _id :id})
+        return res.status(200).json(result);
     } catch (error) {
         console.error('Error fetching books:', error);
         return res.status(500).json({ error: 'An error occurred while fetching books.' });
