@@ -4,19 +4,24 @@ import {model, Schema} from "mongoose";
 const BookSchema = new Schema(
     {
         titulo: {
-            type: String
+            type: String,
+            required: [true, "El titulo es necesario"]
         },
         precio: {
-            type: Number
+            type: Number,
+            required: [true, "El precio es necesario"]
         },
         autor: {
-            type: String
+            type: String,
+            required: [true, "El autor es necesario"]
         },
         estado: {
-            type: String
+            type: String,
+            required: [true, "El estado es necesario"]
         },
         genero: {
-            type: String
+            type: String,
+            required: [true, "El genero es necesario"]
         },
         idioma: {
             type: String

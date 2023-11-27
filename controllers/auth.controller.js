@@ -44,12 +44,12 @@ export const login = async (req,res) =>{
 
         const token = jwt.sign({
             name: usuario.name,
-            id: usuario.id
-        }, TOKEN_SECRET)
+            id: usuario.id,
+        }, TOKEN_SECRET, {expiresIn: '7d'})
 
         return res.header('auth-token', token).json({
             data: {token},
-            usuarioRest
+            usuario
         }).status(200)
 
     } catch (error){
@@ -60,4 +60,15 @@ export const login = async (req,res) =>{
 async function comparePassword(plaintextPassword, hash) {
     const result = await bcrypt.compare(plaintextPassword, hash);
     return result;
+}
+
+
+export const logout = async (req,res,next) => {
+    try{
+        req.session.destroy();
+        return res.redirect("/");
+    }catch(error){
+        // throw res.status(500).json(error)
+        return console.log(error)
+    }
 }
