@@ -88,16 +88,11 @@ export const getBooksByFiltro = async (req, res) => {
     if (req.query) {
       const query = req.query;
       console.log(req.query);
+
       if (query.titulo) {
         const titulo = req.query.titulo;
         const queryTitulo = {titulo: { $regex: new RegExp(titulo, "i") },};
         orQuery.push(queryTitulo);
-        console.log(orQuery);
-      }
-      if(query.genero){
-        const genero = req.query.genero;
-        const queryGenero = { genero: {$regex: new RegExp(genero,"i")},};
-        orQuery.push(queryGenero);
       }
 
       if(query.precio_maximo && query.precio_minimo ){
@@ -116,6 +111,25 @@ export const getBooksByFiltro = async (req, res) => {
         const queryPrecioMinimo = {precio: {$gte:precioMinimo}}
         orQuery.push(queryPrecioMinimo)
       }
+
+      if(query.autor){
+        const autor = req.query.autor
+        const queryAutor = {autor: {$regex: new RegExp(autor,"i")},}
+        orQuery.push(queryAutor)
+      }
+
+      if(query.estado){
+        const estado = req.query.estado
+        const queryEstado = {estado: {$regex: new RegExp(estado,"i")},}
+        orQuery.push(queryEstado)
+      }
+
+      if(query.genero){
+        const genero = req.query.genero;
+        const queryGenero = { genero: {$regex: new RegExp(genero,"i")},};
+        orQuery.push(queryGenero);
+      }
+      
     }
     const result = await Book.find({$and: orQuery});
     return res.status(200).json(result);
