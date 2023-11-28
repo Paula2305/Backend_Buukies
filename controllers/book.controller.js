@@ -78,28 +78,13 @@ export const getBooksByGenero = async (req, res) => {
 
 export const getBooksByFiltro = async (req, res) => {
   try {
-    // if (req.query) {
-    //     const query = req.query;
-    //     const orQuery = [];
-    //     if (query.genero) orQuery.push({ genero: query.genero });
-    //     if (query.title) orQuery.push({ title: query.title });
-    // }
 
-    // Existe genero? Se agrega al array
-    // Existe precio minimo? Se agrega al array (Chequear si hay precio max) --> Precio > Minimo
-    // Existe precio maximo? Se agrega al array (Chequear si hay precio min) --> Precio < Maximo
-    // Existen ambos? Tiene que ser un rango entre max y min.
-    // Buscar logica otras weas.
 
-    // Ejemplos queries
-    // N parametros: details.find({ age: 21, location: "New York" })
-    // Rango: price: { $lte: maxPrice || 1000000000, $gte: minPrice || 0 }
 
     // filter?titulo=el+senor+de+los+anillos
     // regex = reemplazar + por " "
     // resultado = /el señor de los anillos/
     const orQuery = [];
-
     if (req.query) {
       const query = req.query;
       console.log(req.query);
@@ -114,8 +99,25 @@ export const getBooksByFiltro = async (req, res) => {
         const queryGenero = { genero: {$regex: new RegExp(genero,"i")},};
         orQuery.push(queryGenero);
       }
+
+      if(query.precio_maximo && query.precio_minimo ){
+        const precioMaximo = req.query.precio_maximo
+        const precioMinimo = req.query.precio_minimo
+        const queryPrecioRango = {precio: {$lte:precioMaximo, $gte:precioMinimo} }
+        orQuery.push(queryPrecioRango)
+      }
+      if(query.precio_maximo){
+        const precioMaximo = req.query.precio_maximo
+        const queryPrecioMaximo = {precio: {$lte:precioMaximo}}
+        orQuery.push(queryPrecioMaximo)
+      }
+      if(query.precio_minimo){
+        const precioMinimo = req.query.precio_minimo
+        const queryPrecioMinimo = {precio: {$gte:precioMinimo}}
+        orQuery.push(queryPrecioMinimo)
+      }
     }
-    const result = await Book.find({$or: orQuery});
+    const result = await Book.find({$and: orQuery});
     return res.status(200).json(result);
   } catch (error) {
     console.error("Error fetching books:", error);
